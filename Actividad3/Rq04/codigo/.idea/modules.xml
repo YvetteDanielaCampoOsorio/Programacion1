@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/codigo.iml" filepath="$PROJECT_DIR$/codigo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/guarderia.iml" filepath="$PROJECT_DIR$/guarderia.iml" />
     </modules>
   </component>
 </project>

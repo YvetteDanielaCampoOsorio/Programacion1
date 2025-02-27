@@ -1,26 +1,26 @@
 import javax.swing.*;
-import java.lang.reflect.array;
+import javax.swing.JOptionPane;
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
 
-        arrayList<Estudiantes> ListaEstudiantes = new ArrayList <>();
+        ArrayList<Estudiante> listaEstudiantes = new ArrayList<>();
 
-        int n = Integer.parseInt(JOptionPane.showInputDialog("ingrese la cantidad de estudianes a registrar: "));
+        int n = Integer.parseInt(JOptionPane.showInputDialog("Digite la cantidad de estudiantes que quiere registrar: "));
 
         for (int i = 0; i < n; i++){
-            String id = JOptionPane.showInputDialog("ingrese el Id del estudiante");
-            String nombre = JOptionPane.showInputDialog("ingrese nombre del estudiante");
-            int edad =  Integer.parseInt(JOptionPane.showInputDialog("ingrese la edad del estudiante"));
-            String genero = JOptionPane.showInputDialog("ingrese el genero del estudiante");
-            String alergias = JOptionPane.showInputDialog("ingrese las alergias del estudiante");
-            String nombreAcudiente = JOptionPane.showInputDialog("ingrese nombre del acudiente del estudiante");
-            String numeroContacto = JOptionPane.showInputDialog("ingrese numero de contacto del estudiante");
+            String nombre = JOptionPane.showInputDialog("Ingrese el nombre del estudiante: ");
+            String identificacion = JOptionPane.showInputDialog("Ingrese su identificacion: ");
+            int edad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la edad del estudiante: "));
+            String genero = JOptionPane.showInputDialog("Ingrese el genero: ");
+            String alergias = JOptionPane.showInputDialog("Ingrese las alergias: ");
+            String nombreAcudiente = JOptionPane.showInputDialog("Ingrese nombre del acudiente: ");
+            String numeroAcudiente = JOptionPane.showInputDialog("Ingrese numero de contacto: ");
+
+            Estudiante newEstudiante = new Estudiante(nombre,edad, identificacion,genero,alergias,nombreAcudiente,numeroAcudiente);
+
+            listaEstudiantes.add(newEstudiante);
         }
-
-        Estudiantes newEstudiantes = new Estudiantes(id, nombre, edad, genero, alergias, nombreAcuiente, numeroContacto);
-
-        ListaEstudiantes.add(newEstudiantes);
     }
 }
