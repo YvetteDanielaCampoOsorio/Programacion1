@@ -1,15 +1,13 @@
-private class Estudiantes {
-
-    class Estudiantes {
+public class Estudiantes {
         private String id;
         private String nombreCompleto;
         private int edad;
         private String genero;
         private String alergias;
-        private String nombreAcudinte;
+        private String nombreAcudiente;
         private String numeroContacto;
 
-        public Estudiantes(String id, String nombreCompleto,int edad, String genero, String alergias, String nombreAcudinte, String numeroContacto) {
+        public Estudiantes(String id, String nombreCompleto,int edad, String genero, String alergias, String nombreAcudiente, String numeroContacto) {
             this.id = id;
             this.nombreCompleto = nombreCompleto;
             this.edad = edad;
@@ -19,36 +17,44 @@ private class Estudiantes {
             this.numeroContacto = numeroContacto;
         }
 
-        public String toString(){
-            return "nombre => " +nombre + "\n"
-
+        @Override
+        public String toString() {
+            return "Estudiantes{" +
+                    "id='" + id + '\'' + "\n"+
+                    ", nombreCompleto='" + nombreCompleto + '\'' + "\n"+
+                    ", edad=" + edad + "\n"+
+                    ", genero='" + genero + '\'' + "\n"+
+                    ", alergias='" + alergias + '\'' + "\n"+
+                    ", nombreAcudinte='" + nombreAcudiente + '\'' + "\n"+
+                    ", numeroContacto='" + numeroContacto + '\'' +"\n"+
+                    '}';
         }
 
         // Getters y setters
         public String getId() {
             return id;
         }
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public String getNombreCompleto() {
             return nombreCompleto;
         }
-
         public void setNombreCompleto(String nombreCompleto) {
             this.nombreCompleto = nombreCompleto;
         }
 
-        public String getEdad() {
+        public int getEdad() {
             return edad;
         }
-
-        public void setEdad(String edad) {
+        public void setEdad(int edad) {
             this.edad = edad;
         }
 
         public String getGenero() {
             return genero;
         }
-
         public void setGenero(String genero) {
             this.genero = genero;
         }
@@ -56,7 +62,6 @@ private class Estudiantes {
         public String getAlergias() {
             return alergias;
         }
-
         public void setAlergias(String alergias) {
             this.alergias = alergias;
         }
@@ -64,7 +69,6 @@ private class Estudiantes {
         public String getNombreAcudiente() {
             return nombreAcudiente;
         }
-
         public void setnombreAcudiente(String nombreAcudiente) {
             this.nombreAcudiente = nombreAcudiente;
         }
@@ -72,7 +76,6 @@ private class Estudiantes {
         public String getNumeroContacto() {
             return numeroContacto;
         }
-
         public void setNumeroContacto(String numeroContacto) {
             this.numeroContacto = numeroContacto;
         }

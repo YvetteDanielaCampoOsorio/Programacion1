@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-
-        ArrayList<Estudiante> listaEstudiantes = new ArrayList<>();
-
+        //lista inicialisada
+        ArrayList<Estudiantes> listaEstudiantes = new ArrayList<>();
+        
+        //registrar estudiantes
         int n = Integer.parseInt(JOptionPane.showInputDialog("Digite la cantidad de estudiantes que quiere registrar: "));
 
         for (int i = 0; i < n; i++){
@@ -18,9 +19,18 @@ public class Main {
             String nombreAcudiente = JOptionPane.showInputDialog("Ingrese nombre del acudiente: ");
             String numeroAcudiente = JOptionPane.showInputDialog("Ingrese numero de contacto: ");
 
-            Estudiante newEstudiante = new Estudiante(nombre,edad, identificacion,genero,alergias,nombreAcudiente,numeroAcudiente);
+            Estudiantes newEstudiante = new Estudiantes(nombre, identificacion, edad, genero, alergias, nombreAcudiente, numeroAcudiente);
 
             listaEstudiantes.add(newEstudiante);
         }
+
+        //mostrar lista
+        StringBuilder mensaje = new StringBuilder("Lista de Estudiantes:\n");
+        for (Estudiantes e : listaEstudiantes) {
+            mensaje.append(e.toString()).append("\n----------------\n");
+        }
+
+        JOptionPane.showMessageDialog(null, mensaje.toString(), "Estudiantes Registrados", JOptionPane.INFORMATION_MESSAGE);
+
     }
 }

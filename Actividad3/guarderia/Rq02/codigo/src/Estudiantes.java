@@ -1,4 +1,5 @@
 public class Estudiantes {
+
         private String id;
         private String nombreCompleto;
         private int edad;
@@ -17,20 +18,20 @@ public class Estudiantes {
             this.numeroContacto = numeroContacto;
         }
 
-        @Override
-        public String toString() {
-            return "Estudiantes{" +
-                    "id='" + id + '\'' +
-                    ", nombreCompleto='" + nombreCompleto + '\'' +
-                    ", edad=" + edad +
-                    ", genero='" + genero + '\'' +
-                    ", alergias='" + alergias + '\'' +
-                    ", nombreAcudinte='" + nombreAcudiente + '\'' +
-                    ", numeroContacto='" + numeroContacto + '\'' +
-                    '}';
-        }
+    @Override
+    public String toString() {
+        return "Estudiantes{" + "\n"+
+                "id='" + id + '\'' + "\n"+
+                ", nombreCompleto='" + nombreCompleto + '\'' + "\n"+
+                ", edad=" + edad + "\n"+
+                ", genero='" + genero + '\'' + "\n"+
+                ", alergias='" + alergias + '\'' + "\n"+
+                ", nombreAcudiente='" + nombreAcudiente + '\'' + "\n"+
+                ", numeroContacto='" + numeroContacto + '\'' + "\n"+
+                '}';
+    }
 
-        // Getters y setters
+    // Getters y setters
         public String getId() {
             return id;
         }
