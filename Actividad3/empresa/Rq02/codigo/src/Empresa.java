@@ -131,6 +131,8 @@ public class Empresa {
         // Obtener la fecha actual
         LocalDate fechaActual = LocalDate.now();
 
+        StringBuilder mensaje = new StringBuilder("Lista de Empleados:\n\n");
+
         for (Empleado e : ListaEmpleado) {
             // Convertir el String a LocalDate
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -139,24 +141,29 @@ public class Empresa {
             // Calcular la diferencia en años
             int añosTrascurridos = Period.between(fechaPasada, fechaActual).getYears();
             // Mostrar el resultado
-//            System.out.println(e.getId());
-//            System.out.println(e.getSalario());
-//            System.out.println("Han pasado " + añosTrascurridos + " años desde " + e.getFechaContratacion());
-//            System.out.println("-------------------");
             double salarioActual = e.getSalario();
+            //Aumento 5%
             if (añosTrascurridos > 3 && añosTrascurridos <= 5) {
-                //Aumento 5%
-                System.out.println("El salario del empleado con id: " + e.getId() + " tiene un aumento del 5% por tener " + añosTrascurridos + " años en la empresa, Nuevo salario: " + (salarioActual + (salarioActual * 0.05)) + "\n");
+                mensaje.append("El salario del empleado con id: " + e.getId() + " tiene un aumento del 5% por tener " + añosTrascurridos + " años en la empresa, Nuevo salario: " + (salarioActual + (salarioActual * 0.05)) + "\n----------------\n");
+            //Aumento 10%
             } else if (añosTrascurridos > 5 && añosTrascurridos <= 10) {
-                //Aumento 10%
-                System.out.println("El salario del empleado con id: " + e.getId() + " tiene un aumento del 10% por tener " + añosTrascurridos + " años en la empresa, Nuevo salario: " + (salarioActual + (salarioActual * 0.10)) + "\n");
+                mensaje.append("El salario del empleado con id: " + e.getId() + " tiene un aumento del 10% por tener " + añosTrascurridos + " años en la empresa, Nuevo salario: " + (salarioActual + (salarioActual * 0.10)) + "\n----------------\n");
+            //Aumento 15%
             } else if (añosTrascurridos > 10) {
-                //Aumento 15%
-                System.out.println("El salario del empleado con id: " + e.getId() + " tiene un aumento del 15% por tener " + añosTrascurridos + " años en la empresa, Nuevo salario: " + (salarioActual + (salarioActual * 0.15)) + "\n");
+                mensaje.append("El salario del empleado con id: " + e.getId() + " tiene un aumento del 15% por tener " + añosTrascurridos + " años en la empresa, Nuevo salario: " + (salarioActual + (salarioActual * 0.15)) + "\n----------------\n");
             } else {
-                System.out.println("El salario del empleado " + e.getId() + " es de: " + salarioActual + "\n");
+                mensaje.append("El empleado con id '"+ e.getId()+"' tiene menos años de los requeridos en la empresa para un aumento, su salario es de: " + salarioActual + "\n----------------\n");
             }
         }
+        JTextArea textArea = new JTextArea(mensaje.toString(), 20, 40); // Filas y columnas iniciales
+        textArea.setEditable(false); // Solo lectura
+
+        // Agregar el JTextArea dentro de un JScrollPane
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        // Mostrar el JOptionPane con el JScrollPane
+        JOptionPane.showMessageDialog(null, scrollPane, "Empleados Registrados", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void empleadoCedula() {
