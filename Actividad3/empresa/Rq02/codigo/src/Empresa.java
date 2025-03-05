@@ -29,6 +29,10 @@ public class Empresa {
         agrEmpleado(new Empleado("5", "Pedro Martínez", "Soporte", "pedro.martinez@empresa.com", "3344556677", "2012-03-05"));
     }
 
+    public void registrarEmpresa() {
+        JOptionPane.showMessageDialog(null,"No disponible por el momento");
+    }
+
     public void agrEmpleado(Empleado empleado) {
         if (cantidadEmpleados < listaEmpleado.length) {
             listaEmpleado[cantidadEmpleados++] = empleado;
@@ -80,8 +84,12 @@ public class Empresa {
         return false; // ID único
     }
 
-    public void registrarEmpresa() {
-        JOptionPane.showMessageDialog(null,"No disponible por el momento");
+    public void actualizarEmpleados(){
+        System.out.println("Actualizar en proceso");
+    }
+
+    public void eliminarEmpleados(){
+        System.out.println("Eliminar en proceso");
     }
 
     public void mostrarEmpleados() {
@@ -149,27 +157,27 @@ public class Empresa {
             LocalDate fechaPasada = LocalDate.parse(e.getFechaContratacion(), formatter);
 
             // Calcular la diferencia en años
-            int añosTranscurridos = Period.between(fechaPasada, fechaActual).getYears();
+            int anosTranscurridos = Period.between(fechaPasada, fechaActual).getYears();
             double salarioActual = e.getSalario();
             double nuevoSalario = salarioActual; // Inicialmente sin cambios
 
             // Aplicar aumentos según los años en la empresa
-            if (añosTranscurridos > 3 && añosTranscurridos <= 5) {
+            if (anosTranscurridos > 3 && anosTranscurridos <= 5) {
                 nuevoSalario += salarioActual * 0.05; // Aumento del 5%
                 mensaje.append("El empleado con ID ").append(e.getId())
-                        .append(" tiene un aumento del 5% por ").append(añosTranscurridos)
+                        .append(" tiene un aumento del 5% por ").append(anosTranscurridos)
                         .append(" años en la empresa. Nuevo salario: ").append(nuevoSalario)
                         .append("\n----------------\n");
-            } else if (añosTranscurridos > 5 && añosTranscurridos <= 10) {
+            } else if (anosTranscurridos > 5 && anosTranscurridos <= 10) {
                 nuevoSalario += salarioActual * 0.10; // Aumento del 10%
                 mensaje.append("El empleado con ID ").append(e.getId())
-                        .append(" tiene un aumento del 10% por ").append(añosTranscurridos)
+                        .append(" tiene un aumento del 10% por ").append(anosTranscurridos)
                         .append(" años en la empresa. Nuevo salario: ").append(nuevoSalario)
                         .append("\n----------------\n");
-            } else if (añosTranscurridos > 10) {
+            } else if (anosTranscurridos > 10) {
                 nuevoSalario += salarioActual * 0.15; // Aumento del 15%
                 mensaje.append("El empleado con ID ").append(e.getId())
-                        .append(" tiene un aumento del 15% por ").append(añosTranscurridos)
+                        .append(" tiene un aumento del 15% por ").append(anosTranscurridos)
                         .append(" años en la empresa. Nuevo salario: ").append(nuevoSalario)
                         .append("\n----------------\n");
             } else {
@@ -233,7 +241,6 @@ public class Empresa {
             JOptionPane.showMessageDialog(null, "No existe un empleado con ese cargo.");
         }
     }
-
 
     public void reporteSalarios() {
         if (listaEmpleado.length == 0) {

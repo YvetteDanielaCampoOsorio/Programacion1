@@ -9,7 +9,7 @@ public class Main {
         int opcion;
 
         do {
-            opcion = Integer.parseInt(JOptionPane.showInputDialog("*****Seleccione una opcion*****\n\n 1. Registrar una empresa\n 2. Agregar empleados a la empresa\n 3. Mostar empleados registrados\n 4. Calcular y mostrar el salario de cada empleado\n 5. Buscar empleado por cédula\n 6. Buscar empleado por cargo\n 7. Reporte de salarios mas Altos/Bajos\n 8. Salir del programa"));
+            opcion = Integer.parseInt(JOptionPane.showInputDialog("*****Seleccione una opcion*****\n\n 1. Registrar una empresa\n 2. Gestionar empleados\n 3. Calcular y mostrar el salario de cada empleado\n 4. Buscar empleado por cédula\n 5. Buscar empleado por cargo\n 6. Reporte de salarios mas Altos/Bajos\n 7. Salir del programa"));
 
             switch (opcion) {
                 case 1:
@@ -17,37 +17,66 @@ public class Main {
                     break;
 
                 case 2:
-                    empresa.agregarEmpleados();
+                    //Gestion de empleados
+                    int opcionGestion;
+                    do {
+                        opcionGestion = Integer.parseInt(JOptionPane.showInputDialog("*****Gestion empleados*****\n\n 1. Agregar empleados\n 2. Actualizar empleados\n 3. Eliminar empleados\n 4. Mostrar empleados\n 5. Salir"));
+
+                        switch (opcionGestion) {
+                            case 1:
+                                empresa.agregarEmpleados();
+                                break;
+
+                            case 2:
+                                empresa.actualizarEmpleados();
+                                break;
+
+                            case 3:
+                                empresa.eliminarEmpleados();
+                                break;
+
+                            case 4:
+                                empresa.mostrarEmpleados();
+                                break;
+
+                            case 5:
+                                //Salir de gestion
+                                break;
+
+                            default:
+                                JOptionPane.showMessageDialog(null, "El dato ingresado no es valido");
+                                break;
+                        }
+
+                    } while (opcionGestion != 5);
                     break;
 
                 case 3:
-                    empresa.mostrarEmpleados();
-                    break;
-
-                case 4:
                     empresa.salarioEmpleados();
                     break;
 
-                case 5:
+                case 4:
                     empresa.empleadoCedula();
                     break;
 
-                case 6:
+                case 5:
                     empresa.empleadoCargo();
                     break;
 
-                case 7:
+                case 6:
                     empresa.reporteSalarios();
                     break;
 
-                case 8 :
+                case 7:
                     //Salir del programa
                     JOptionPane.showMessageDialog(null, "Hasta la próxima :)");
                     break;
 
                 default:
                     JOptionPane.showMessageDialog(null, "El dato ingresado no es valido");
+                    break;
             }
-        } while (opcion != 8);
+
+        } while (opcion != 7);
     }
 }
