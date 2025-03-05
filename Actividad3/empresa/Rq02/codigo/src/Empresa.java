@@ -1,31 +1,113 @@
 import javax.swing.*;
-import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 public class Empresa {
-
     //Atributos
     private String nombre;
     private String direccion;
     private String nit;
-    //lista en de empleados
-    private ArrayList<Empleado> ListaEmpleado = new ArrayList<>();
-    private ArrayList<Empresa> ListaEmpresa = new ArrayList<>();
-
+    private Empleado[] listaEmpleado;
+    private int cantidadEmpleados;
 
     //Constructor
     public Empresa(String nombre, String direccion, String nit) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.nit = nit;
+        this.listaEmpleado = new Empleado[50]; // Tamaño máximo de empleados
+        this.cantidadEmpleados = 0;
+        cargarDatos();
+    }
 
-        ListaEmpleado.add(new Empleado("1", "Juan Pérez", "Gerente", "juan.perez@empresa.com", "1234567890", "2020-05-15"));
-        ListaEmpleado.add(new Empleado("2", "María López", "Analista", "maria.lopez@empresa.com", "0987654321", "2019-08-22"));
-        ListaEmpleado.add(new Empleado("3", "Carlos Ruiz", "Desarrollador", "carlos.ruiz@empresa.com", "1122334455", "2021-01-10"));
-        ListaEmpleado.add(new Empleado("4", "Ana Gómez", "Diseñador", "ana.gomez@empresa.com", "2233445566", "2018-07-30"));
-        ListaEmpleado.add(new Empleado("5", "Pedro Martínez", "Soporte", "pedro.martinez@empresa.com", "3344556677", "2012-03-05"));
+    public void cargarDatos() {
+        agrEmpleado(new Empleado("1", "Juan Pérez", "Gerente", "juan.perez@empresa.com", "1234567890", "2020-05-15"));
+        agrEmpleado(new Empleado("2", "María López", "Analista", "maria.lopez@empresa.com", "0987654321", "2019-08-22"));
+        agrEmpleado(new Empleado("3", "Carlos Ruiz", "Desarrollador", "carlos.ruiz@empresa.com", "1122334455", "2021-01-10"));
+        agrEmpleado(new Empleado("4", "Ana Gómez", "Diseñador", "ana.gomez@empresa.com", "2233445566", "2018-07-30"));
+        agrEmpleado(new Empleado("5", "Pedro Martínez", "Soporte", "pedro.martinez@empresa.com", "3344556677", "2012-03-05"));
+    }
+
+    public void agrEmpleado(Empleado empleado) {
+        if (cantidadEmpleados < listaEmpleado.length) {
+            listaEmpleado[cantidadEmpleados++] = empleado;
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pueden agregar más empleados.");
+        }
+    }
+
+    public void agregarEmpleados() {
+        // Cantidad de empleados a registrar
+        int n = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de empleados a registrar: "));
+
+        // Registro de empleados
+        for (int i = 0; i < n; i++) {
+            if (cantidadEmpleados >= listaEmpleado.length) {
+                JOptionPane.showMessageDialog(null, "No se pueden agregar más empleados, límite alcanzado '50 empleados'.");
+                break; // Detener el registro si el límite se ha alcanzado
+            }
+
+            String id;
+            while (true) {
+                id = JOptionPane.showInputDialog("Ingrese el Id del empleado número " + (i + 1));
+                if (idExiste(id)) {
+                    JOptionPane.showMessageDialog(null, "El ID ingresado ya existe");
+                } else {
+                    break;
+                }
+            }
+
+            String nombre = JOptionPane.showInputDialog("Ingrese nombre completo del Empleado");
+            String puesto = JOptionPane.showInputDialog("Ingrese el puesto del empleado");
+            String correo = JOptionPane.showInputDialog("Ingrese correo del Empleado");
+            String telefono = JOptionPane.showInputDialog("Ingrese el teléfono del empleado");
+            String fechaContratacion = JOptionPane.showInputDialog("Ingrese fecha de contratación del empleado");
+
+            // Crear nuevo empleado
+            Empleado empleado = new Empleado(id, nombre, puesto, correo, telefono, fechaContratacion);
+            agrEmpleado(empleado);
+        }
+    }
+
+    // Metodo para verificar si el id existe
+    private boolean idExiste(String id) {
+        for (int i = 0; i < cantidadEmpleados; i++) { // Solo recorrer empleados registrados
+            if (listaEmpleado[i].getId().equals(id)) {
+                return true; // El ID existe
+            }
+        }
+        return false; // ID único
+    }
+
+    public void registrarEmpresa() {
+        JOptionPane.showMessageDialog(null,"No disponible por el momento");
+    }
+
+    public void mostrarEmpleados() {
+        // Verificar si hay empleados registrados
+        if (cantidadEmpleados == 0) {
+            JOptionPane.showMessageDialog(null, "No hay empleados registrados.");
+            return;
+        }
+
+        // Construir mensaje con la lista de empleados
+        StringBuilder mensaje = new StringBuilder("Lista de Empleados:\n");
+
+        for (int i = 0; i < cantidadEmpleados; i++) { // Solo recorrer empleados registrados
+            mensaje.append(listaEmpleado[i].toString()).append("\n----------------\n");
+        }
+
+        // Crear un JTextArea con el mensaje
+        JTextArea textArea = new JTextArea(mensaje.toString(), 20, 40); // Filas y columnas iniciales
+        textArea.setEditable(false); // Solo lectura
+
+        // Agregar el JTextArea dentro de un JScrollPane
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        // Mostrar el JOptionPane con el JScrollPane
+        JOptionPane.showMessageDialog(null, scrollPane, "Empleados Registrados", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static double obtenerSalarioPorCargo(String cargo) {
@@ -45,72 +127,56 @@ public class Empresa {
         }
     }
 
-    public void registrarEmpresa() {
-        //cantidad de empresas a registrar
-        int n = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de empresas a registrar: "));
-        //registro empresas
-        for (int i = 0; i < n; i++) {
-            String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la empresa numero " + (i + 1));
-            String direccion = JOptionPane.showInputDialog("Ingrese la direccion de la empresa");
-            String nit = JOptionPane.showInputDialog("Ingrese el nit de la empresa");
-        }
+    public void salarioEmpleados() {
+        // Calcular y mostrar el salario de cada empleado
 
-        //se agrega la empresa
-        Empresa empresa = new Empresa(nombre, direccion, nit);
-        ListaEmpresa.add(empresa);
-    }
+        // Obtener la fecha actual
+        LocalDate fechaActual = LocalDate.now();
 
-    public void agregarEmpleados() {
-        // Cantidad de empleados a registrar
-        int n = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de empleados a registrar: "));
-
-        if (n > 50) {
-            JOptionPane.showMessageDialog(null, "El límite de empleados a ingresar es '50'");
+        // Verificar si hay empleados registrados
+        if (cantidadEmpleados == 0) {
+            JOptionPane.showMessageDialog(null, "No hay empleados registrados.");
             return;
         }
 
-        // Registro de empleados
-        for (int i = 0; i < n; i++) {
-            String id;
+        StringBuilder mensaje = new StringBuilder("Lista de Empleados con ajuste salarial:\n\n");
 
-            // Validar que el ID no esté repetido
-            while (true) {
-                id = JOptionPane.showInputDialog("Ingrese el Id del empleado número " + (i + 1));
+        for (int i = 0; i < cantidadEmpleados; i++) { // Recorrer solo empleados registrados
+            Empleado e = listaEmpleado[i]; // Obtener el empleado actual
 
-                if (idExiste(id)) {
-                    JOptionPane.showMessageDialog(null, "El ID ingresado ya existe. Intente con otro.", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    break;
-                }
+            // Convertir la fecha de contratación (String) a LocalDate
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate fechaPasada = LocalDate.parse(e.getFechaContratacion(), formatter);
+
+            // Calcular la diferencia en años
+            int añosTranscurridos = Period.between(fechaPasada, fechaActual).getYears();
+            double salarioActual = e.getSalario();
+            double nuevoSalario = salarioActual; // Inicialmente sin cambios
+
+            // Aplicar aumentos según los años en la empresa
+            if (añosTranscurridos > 3 && añosTranscurridos <= 5) {
+                nuevoSalario += salarioActual * 0.05; // Aumento del 5%
+                mensaje.append("El empleado con ID ").append(e.getId())
+                        .append(" tiene un aumento del 5% por ").append(añosTranscurridos)
+                        .append(" años en la empresa. Nuevo salario: ").append(nuevoSalario)
+                        .append("\n----------------\n");
+            } else if (añosTranscurridos > 5 && añosTranscurridos <= 10) {
+                nuevoSalario += salarioActual * 0.10; // Aumento del 10%
+                mensaje.append("El empleado con ID ").append(e.getId())
+                        .append(" tiene un aumento del 10% por ").append(añosTranscurridos)
+                        .append(" años en la empresa. Nuevo salario: ").append(nuevoSalario)
+                        .append("\n----------------\n");
+            } else if (añosTranscurridos > 10) {
+                nuevoSalario += salarioActual * 0.15; // Aumento del 15%
+                mensaje.append("El empleado con ID ").append(e.getId())
+                        .append(" tiene un aumento del 15% por ").append(añosTranscurridos)
+                        .append(" años en la empresa. Nuevo salario: ").append(nuevoSalario)
+                        .append("\n----------------\n");
+            } else {
+                mensaje.append("El empleado con ID '").append(e.getId())
+                        .append("' tiene menos años de los requeridos en la empresa para un aumento. Su salario actual es: ")
+                        .append(salarioActual).append("\n----------------\n");
             }
-
-            String nombre = JOptionPane.showInputDialog("Ingrese nombre completo del Empleado");
-            String puesto = JOptionPane.showInputDialog("Ingrese el puesto del empleado");
-            String correo = JOptionPane.showInputDialog("Ingrese correo del Empleado");
-            String telefono = JOptionPane.showInputDialog("Ingrese el teléfono del empleado");
-            String fechaContratacion = JOptionPane.showInputDialog("Ingrese fecha de contratación del empleado");
-
-            // Se agrega el empleado a la lista
-            Empleado empleado = new Empleado(id, nombre, puesto, correo, telefono, fechaContratacion);
-            ListaEmpleado.add(empleado);
-        }
-    }
-
-    // Metodo para verificar si el id existe
-    private boolean idExiste(String id) {
-        for (Empleado e : ListaEmpleado) {
-            if (e.getId().equals(id)) {
-                return true; // El id existe
-            }
-        }
-        return false; // id unico
-    }
-
-    public void mostrarEmpleados() {
-        // Mostrar lista de empleados registrados
-        StringBuilder mensaje = new StringBuilder("Lista de Empleados:\n");
-        for (Empleado e : ListaEmpleado) {
-            mensaje.append(e.toString()).append("\n----------------\n");
         }
 
         // Crear un JTextArea con el mensaje
@@ -122,66 +188,31 @@ public class Empresa {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         // Mostrar el JOptionPane con el JScrollPane
-        JOptionPane.showMessageDialog(null, scrollPane, "Empleados Registrados", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public void salarioEmpleados() {
-        //Calcular y mostrar el salario de cada empleado
-
-        // Obtener la fecha actual
-        LocalDate fechaActual = LocalDate.now();
-
-        StringBuilder mensaje = new StringBuilder("Lista de Empleados:\n\n");
-
-        for (Empleado e : ListaEmpleado) {
-            // Convertir el String a LocalDate
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate fechaPasada = LocalDate.parse(e.getFechaContratacion(), formatter);
-
-            // Calcular la diferencia en años
-            int añosTrascurridos = Period.between(fechaPasada, fechaActual).getYears();
-            // Mostrar el resultado
-            double salarioActual = e.getSalario();
-            //Aumento 5%
-            if (añosTrascurridos > 3 && añosTrascurridos <= 5) {
-                mensaje.append("El salario del empleado con id: " + e.getId() + " tiene un aumento del 5% por tener " + añosTrascurridos + " años en la empresa, Nuevo salario: " + (salarioActual + (salarioActual * 0.05)) + "\n----------------\n");
-            //Aumento 10%
-            } else if (añosTrascurridos > 5 && añosTrascurridos <= 10) {
-                mensaje.append("El salario del empleado con id: " + e.getId() + " tiene un aumento del 10% por tener " + añosTrascurridos + " años en la empresa, Nuevo salario: " + (salarioActual + (salarioActual * 0.10)) + "\n----------------\n");
-            //Aumento 15%
-            } else if (añosTrascurridos > 10) {
-                mensaje.append("El salario del empleado con id: " + e.getId() + " tiene un aumento del 15% por tener " + añosTrascurridos + " años en la empresa, Nuevo salario: " + (salarioActual + (salarioActual * 0.15)) + "\n----------------\n");
-            } else {
-                mensaje.append("El empleado con id '"+ e.getId()+"' tiene menos años de los requeridos en la empresa para un aumento, su salario es de: " + salarioActual + "\n----------------\n");
-            }
-        }
-        JTextArea textArea = new JTextArea(mensaje.toString(), 20, 40); // Filas y columnas iniciales
-        textArea.setEditable(false); // Solo lectura
-
-        // Agregar el JTextArea dentro de un JScrollPane
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-
-        // Mostrar el JOptionPane con el JScrollPane
-        JOptionPane.showMessageDialog(null, scrollPane, "Empleados Registrados", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, scrollPane, "Salarios de Empleados", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void empleadoCedula() {
-        int entradaId = Integer.parseInt(JOptionPane.showInputDialog("Id del empleado a consultar"));
-        boolean encontrado = false;//bandera
+        String entradaId = JOptionPane.showInputDialog("Id del empleado a consultar");
 
-        //Buscar el empleado
-        for (Empleado e : ListaEmpleado) {
-            if (entradaId == Integer.parseInt(e.getId())) {
+        if (entradaId == null || entradaId.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un ID válido.");
+            return;
+        }
+
+        boolean encontrado = false; // Bandera
+
+        // Buscar el empleado
+        for (Empleado e : listaEmpleado) { // listaEmpleado debe estar bien declarada en tu clase
+            if (entradaId.equals(e.getId())) { // Comparación correcta entre Strings
                 JOptionPane.showMessageDialog(null, e.toString());
                 encontrado = true; // Se encontró el empleado
                 break;
             }
         }
 
-        // Validar si no existe el id
+        // Validar si no existe el ID
         if (!encontrado) {
-            JOptionPane.showMessageDialog(null, "No existe un empleado con el ID ingresado.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No existe un empleado con el ID ingresado.");
         }
     }
 
@@ -190,43 +221,52 @@ public class Empresa {
         boolean encontrado = false; // Bandera para verificar si se encuentra el empleado
 
         // Buscar empleados con el cargo ingresado
-        for (Empleado e : ListaEmpleado) {
-            if (entradaCargo.equalsIgnoreCase(e.getPuesto().trim())) { // Comparar ignorando mayúsculas y minúsculas
-                JOptionPane.showMessageDialog(null, e.toString());
+        for (int i = 0; i < cantidadEmpleados; i++) {
+            if (entradaCargo.equalsIgnoreCase(listaEmpleado[i].getPuesto().trim())) { // Comparar ignorando mayúsculas y minúsculas
+                JOptionPane.showMessageDialog(null, listaEmpleado[i].toString());
                 encontrado = true; // Se encontró el empleado
             }
         }
 
         // Validar si no se encontró ningún empleado con ese cargo
         if (!encontrado) {
-            JOptionPane.showMessageDialog(null, "No existe un empleado con ese cargo.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No existe un empleado con ese cargo.");
         }
     }
 
+
     public void reporteSalarios() {
+        if (listaEmpleado.length == 0) {
+            JOptionPane.showMessageDialog(null, "No hay empleados registrados.");
+            return;
+        }
+
         // Inicializar con el primer empleado de la lista
-        Empleado empleadoMayorSalario = ListaEmpleado.get(0);
-        Empleado empleadoMenorSalario = ListaEmpleado.get(0);
+        Empleado empleadoMayorSalario = listaEmpleado[0];
+        Empleado empleadoMenorSalario = listaEmpleado[0];
 
         double mayor = empleadoMayorSalario.getSalario();
         double menor = empleadoMenorSalario.getSalario();
 
         // Encontrar el mayor y menor salario
-        for (Empleado e : ListaEmpleado) {
-            if (e.getSalario() > mayor) {
-                mayor = e.getSalario();
-                empleadoMayorSalario = e;
-            }
-            if (e.getSalario() < menor) {
-                menor = e.getSalario();
-                empleadoMenorSalario = e;
+        for (Empleado e : listaEmpleado) { // listaEmpleado debe estar bien declarada en tu clase
+            if (e != null) { // Evitar posibles NullPointerException
+                if (e.getSalario() > mayor) {
+                    mayor = e.getSalario();
+                    empleadoMayorSalario = e;
+                }
+                if (e.getSalario() < menor) {
+                    menor = e.getSalario();
+                    empleadoMenorSalario = e;
+                }
             }
         }
 
         // Mostrar resultados
-        JOptionPane.showMessageDialog(null, "El empleado con el salario más alto es:\n" + empleadoMayorSalario.toString() + "\n El empleado con el salario más bajo es:\n" + empleadoMenorSalario.toString());
+        JOptionPane.showMessageDialog(null, "El empleado con el salario más alto es:\n"
+                + empleadoMayorSalario.toString() + "\n\nEl empleado con el salario más bajo es:\n"
+                + empleadoMenorSalario.toString());
     }
-
 
     //Getter and Setter
     public String getNombre() {
