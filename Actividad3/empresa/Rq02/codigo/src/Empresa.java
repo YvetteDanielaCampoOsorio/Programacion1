@@ -10,6 +10,8 @@ public class Empresa {
     private String nit;
     private Empleado[] listaEmpleado;
     private int cantidadEmpleados;
+    private String empleadoEncontrado;
+    private int posicionEmpleado;
 
     //Constructor
     public Empresa(String nombre, String direccion, String nit) {
@@ -76,38 +78,95 @@ public class Empresa {
 
     // Metodo para verificar si el id existe
     private boolean idExiste(String id) {
-        for (int i = 0; i < cantidadEmpleados; i++) { // Solo recorrer empleados registrados
+        for (int i = 0; i < cantidadEmpleados; i++) {
             if (listaEmpleado[i].getId().equals(id)) {
-                return true; // El ID existe
+                return true; // El id existe
             }
         }
         return false; // ID único
     }
 
-    public void actualizarEmpleados(){
-        System.out.println("Actualizar en proceso");
+    //Buscar empleados (2 metodos: actualizar y eliminar)
+    public boolean buscar(String entradaId) {
+        // Validar que no sea vacío
+        if (entradaId == null || entradaId.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un ID válido.");
+            return false;
+        }
+
+        // Buscar empleado
+        for (int i = 0; i < listaEmpleado.length; i++) {
+            if (listaEmpleado[i] != null && entradaId.equals(listaEmpleado[i].getId())) {
+                empleadoEncontrado = listaEmpleado[i].toString();
+                posicionEmpleado = i;
+                System.out.println("Posición del empleado: " + i);
+                return true; // Devuelve `true` si encontró el empleado
+            }
+        }
+
+        // Si no se encontró el empleado
+        JOptionPane.showMessageDialog(null, "No existe un empleado con el ID ingresado.");
+        return false;
     }
 
-    public void eliminarEmpleados(){
-        System.out.println("Eliminar en proceso");
+    public void actualizarEmpleados() {
+        String entradaId = JOptionPane.showInputDialog("Ingrese el ID del empleado a actualizar");
+
+        if (!buscar(entradaId)) { // Verificar si el empleado existe antes de actualizar
+            return;
+        }
+
+        JOptionPane.showMessageDialog(null, "Datos del empleado\n\n" + empleadoEncontrado);
+        String actNombre = JOptionPane.showInputDialog(null, "Actualizar nombre:", "Entrada", JOptionPane.QUESTION_MESSAGE, null, null, listaEmpleado[posicionEmpleado].getNombreCompleto()).toString();
+        String actPuesto = JOptionPane.showInputDialog(null, "Actualizar puesto:", "Entrada", JOptionPane.QUESTION_MESSAGE, null, null, listaEmpleado[posicionEmpleado].getPuesto()).toString();
+        String actCorreo = JOptionPane.showInputDialog(null, "Actualizar correo:", "Entrada", JOptionPane.QUESTION_MESSAGE, null, null, listaEmpleado[posicionEmpleado].getCorreo()).toString();
+        String actTelefono = JOptionPane.showInputDialog(null, "Actualizar teléfono:", "Entrada", JOptionPane.QUESTION_MESSAGE, null, null, listaEmpleado[posicionEmpleado].getTelefono()).toString();
+        String actFechaContratacion = JOptionPane.showInputDialog(null, "Actualizar fecha de contratación:", "Entrada", JOptionPane.QUESTION_MESSAGE, null, null, listaEmpleado[posicionEmpleado].getFechaContratacion()).toString();
+
+        listaEmpleado[posicionEmpleado].setNombreCompleto(actNombre);
+        listaEmpleado[posicionEmpleado].setPuesto(actPuesto);
+        listaEmpleado[posicionEmpleado].setCorreo(actCorreo);
+        listaEmpleado[posicionEmpleado].setTelefono(actTelefono);
+        listaEmpleado[posicionEmpleado].setFechaContratacion(actFechaContratacion);
+
+        JOptionPane.showMessageDialog(null, "¡Empleado " + entradaId + " actualizado!\n\n" + listaEmpleado[posicionEmpleado].toString());
+    }
+
+    public void eliminarEmpleados() {
+        String entradaId = JOptionPane.showInputDialog("Ingrese el ID del empleado a eliminar");
+
+        if (!buscar(entradaId)) { // Verificar si el empleado existe antes de eliminar
+            return;
+        }
+
+        for (int i = posicionEmpleado; i < listaEmpleado.length - 1; i++) {
+            listaEmpleado[i] = listaEmpleado[i + 1]; // Desplazar elementos
+        }
+        listaEmpleado[listaEmpleado.length - 1] = null; // Eliminar último duplicado
+        cantidadEmpleados--;
+
+        JOptionPane.showMessageDialog(null, "¡Empleado eliminado!");
     }
 
     public void mostrarEmpleados() {
         // Verificar si hay empleados registrados
-        if (cantidadEmpleados == 0) {
+        boolean hayEmpleados = false;
+        StringBuilder mensaje = new StringBuilder("Lista de Empleados:\n");
+
+        for (int i = 0; i < listaEmpleado.length; i++) {
+            if (listaEmpleado[i] != null) { // Evitar NullPointerException
+                mensaje.append(listaEmpleado[i].toString()).append("\n----------------\n");
+                hayEmpleados = true;
+            }
+        }
+
+        if (!hayEmpleados) {
             JOptionPane.showMessageDialog(null, "No hay empleados registrados.");
             return;
         }
 
-        // Construir mensaje con la lista de empleados
-        StringBuilder mensaje = new StringBuilder("Lista de Empleados:\n");
-
-        for (int i = 0; i < cantidadEmpleados; i++) { // Solo recorrer empleados registrados
-            mensaje.append(listaEmpleado[i].toString()).append("\n----------------\n");
-        }
-
         // Crear un JTextArea con el mensaje
-        JTextArea textArea = new JTextArea(mensaje.toString(), 20, 40); // Filas y columnas iniciales
+        JTextArea textArea = new JTextArea(mensaje.toString(), 20, 40);
         textArea.setEditable(false); // Solo lectura
 
         // Agregar el JTextArea dentro de un JScrollPane
@@ -117,6 +176,7 @@ public class Empresa {
         // Mostrar el JOptionPane con el JScrollPane
         JOptionPane.showMessageDialog(null, scrollPane, "Empleados Registrados", JOptionPane.INFORMATION_MESSAGE);
     }
+
 
     public static double obtenerSalarioPorCargo(String cargo) {
         switch (cargo.toLowerCase()) {
@@ -149,7 +209,7 @@ public class Empresa {
 
         StringBuilder mensaje = new StringBuilder("Lista de Empleados con ajuste salarial:\n\n");
 
-        for (int i = 0; i < cantidadEmpleados; i++) { // Recorrer solo empleados registrados
+        for (int i = 0; i < cantidadEmpleados; i++) {
             Empleado e = listaEmpleado[i]; // Obtener el empleado actual
 
             // Convertir la fecha de contratación (String) a LocalDate
@@ -202,35 +262,17 @@ public class Empresa {
     public void empleadoCedula() {
         String entradaId = JOptionPane.showInputDialog("Id del empleado a consultar");
 
-        if (entradaId == null || entradaId.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar un ID válido.");
-            return;
-        }
-
-        boolean encontrado = false; // Bandera
-
-        // Buscar el empleado
-        for (Empleado e : listaEmpleado) { // listaEmpleado debe estar bien declarada en tu clase
-            if (entradaId.equals(e.getId())) { // Comparación correcta entre Strings
-                JOptionPane.showMessageDialog(null, e.toString());
-                encontrado = true; // Se encontró el empleado
-                break;
-            }
-        }
-
-        // Validar si no existe el ID
-        if (!encontrado) {
-            JOptionPane.showMessageDialog(null, "No existe un empleado con el ID ingresado.");
-        }
+        buscar(entradaId);
+        JOptionPane.showMessageDialog(null,empleadoEncontrado);
     }
 
     public void empleadoCargo() {
         String entradaCargo = JOptionPane.showInputDialog("Ingrese el cargo del empleado a consultar").trim();
-        boolean encontrado = false; // Bandera para verificar si se encuentra el empleado
+        boolean encontrado = false; // Bandera
 
         // Buscar empleados con el cargo ingresado
         for (int i = 0; i < cantidadEmpleados; i++) {
-            if (entradaCargo.equalsIgnoreCase(listaEmpleado[i].getPuesto().trim())) { // Comparar ignorando mayúsculas y minúsculas
+            if (entradaCargo.equalsIgnoreCase(listaEmpleado[i].getPuesto().trim())) {
                 JOptionPane.showMessageDialog(null, listaEmpleado[i].toString());
                 encontrado = true; // Se encontró el empleado
             }
@@ -256,8 +298,8 @@ public class Empresa {
         double menor = empleadoMenorSalario.getSalario();
 
         // Encontrar el mayor y menor salario
-        for (Empleado e : listaEmpleado) { // listaEmpleado debe estar bien declarada en tu clase
-            if (e != null) { // Evitar posibles NullPointerException
+        for (Empleado e : listaEmpleado) {
+            if (e != null) {
                 if (e.getSalario() > mayor) {
                     mayor = e.getSalario();
                     empleadoMayorSalario = e;
